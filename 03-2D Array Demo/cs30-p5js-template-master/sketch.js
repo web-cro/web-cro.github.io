@@ -5,14 +5,12 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let numberOfRects;
+let numberOfRects = 500;
 let rectHeight = [];
 let rectwidth;
-let time = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  numberOfRects = width;
   rectwidth = width / numberOfRects;
   setTheHeight();
 }
@@ -24,9 +22,7 @@ function draw() {
 
 function setTheHeight() {
   for (let i = 0; i < numberOfRects; i ++) {
-    let theHeight = noise(time) * height;
-    rectHeight.push(theHeight);
-    time += 0.005;
+    rectHeight.push (random(1, height));
   }
 }
 
