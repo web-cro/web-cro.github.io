@@ -10,13 +10,18 @@ let cellWidth;
 let cellHeight;
 let level;
 
+let playerX = 8;
+let playerY = 10;
+
 function preload() {
-  level = loadStrings("assets/1level.txt");
   level = loadStrings("assets/2level.txt");
+  level = loadStrings("assets/1level.txt");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  
 
   // convert Level into 2d array
   for (let i=0; i<level.length; i++) {
@@ -30,6 +35,7 @@ function setup() {
     }
   }
 
+  level[playerY][playerX] = 9;
 
   cellWidth = width / level[0].length;
   cellHeight = height / level.length;
@@ -49,6 +55,10 @@ function displaylevel() {
         fill(48,48,48);
       }
 
+      else if (level[y][x] === 9) {
+        fill("red");
+      }
+
       else if (level[y][x] === 2){
         fill(61,30,0);
       }
@@ -57,6 +67,41 @@ function displaylevel() {
         fill(12,102,0);
       }
       rect(cellWidth*x, cellHeight*y, cellWidth, cellHeight);
+    }
+  }
+}
+
+function keyPressed() {
+  if (key === "w") {
+    //move up
+    if (level[playerY - 1][playerX] === 0) {
+      level[playerY][playerX] = 0; //resetting players current location to white
+      playerY -= 1;
+      level[playerY][playerX] = 9; //set new location to red
+    }
+  }
+  if (key === "s") {
+    //move down
+    if (level[playerY + 1][playerX] === 0) {
+      level[playerY][playerX] = 0; //resetting players current location to white
+      playerY += 1;
+      level[playerY][playerX] = 9; //set new location to red
+    }
+  }
+  if (key === "d") {
+    //move right
+    if (level[playerY][playerX + 1] === 0) {
+      level[playerY][playerX] = 0; //resetting players current location to white
+      playerX += 1;
+      level[playerY][playerX] = 9; //set new location to red
+    }
+  }
+  if (key === "a") {
+    //move left
+    if (level[playerY][playerX - 1] === 0) {
+      level[playerY][playerX] = 0; //resetting players current location to white
+      playerX -= 1;
+      level[playerY][playerX] = 9; //set new location to red
     }
   }
 }
