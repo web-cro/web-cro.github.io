@@ -10,11 +10,10 @@ let cellWidth;
 let cellHeight;
 let level;
 
-let playerX = 8;
-let playerY = 10;
+let playerX = 0;
+let playerY = 4;
 
 function preload() {
-  level = loadStrings("assets/2level.txt");
   level = loadStrings("assets/1level.txt");
 }
 
@@ -63,7 +62,7 @@ function displaylevel() {
         fill(61,30,0);
       }
 
-      else {
+      else if (level[y][x] === 1) {
         fill(12,102,0);
       }
       rect(cellWidth*x, cellHeight*y, cellWidth, cellHeight);
