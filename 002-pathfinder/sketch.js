@@ -11,9 +11,8 @@
 //  g(n) = time from start to finish
 //  h(n) = IDK ??
 
-let cols = 50;
-let rows = 50;
-let grid = new Array(cols); // How does "New Array" work?
+const GRIDSIZE = 50;
+let grid;
 
 let openSet = [];
 let closedSet = [];
@@ -25,31 +24,15 @@ let path = [];
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    cellWidth = width / cols;
-    cellHeight = height / rows;
+    cellWidth = width / grid[0].lenght;
+    cellHeight = height / grid.length;
 
     // making an 2D array
-    for (let i = 0; i < cols; i++) {
-        grid[i] = new Array(rows);
-    }
+    // for (let i = 0; i < GRIDSIZE; i++) {
+    //     grid[i] = new Array(GRIDSIZE);
+    // }
 
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            grid[i][j] = new Spot (i, j); // is new used much like a let to Define funtions
-        }
-    }
-
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            grid[i][j].addNeighbors(grid);
-        }
-    }
-
-    start = grid[0][0]; // start point
-    end = grid[25][23]; // end point
-
-    openSet.push(start);
-
+    generateGrid();
     console.log(grid);
 }
 
@@ -112,8 +95,8 @@ function draw() {
 
     background(0);
 
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
+    for (let i = 0; i < GRIDSIZE; i++) {
+        for (let j = 0; j < GRIDSIZE; j++) {
             grid[i][j].show(color(255));
         }
     }
@@ -161,13 +144,13 @@ class Spot {
         this.show = function(color) {
             fill(color);
             rect(this.i * cellWidth, this.j * cellHeight, cellWidth - 1, cellHeight - 1);
-        }
+        //}
 
         this.addNeighbors = function(grid) {
             let i = this.i;
             let j = this. j;
             // Check neighbors
-            if (i < cols - 1) {
+            if (i < GRIDSIZE - 1) {
                 this.neighbors.push(grid[i + 1] [j]);
             }
 
@@ -175,7 +158,7 @@ class Spot {
                 this.neighbors.push(grid[i - 1] [j]);
             }
 
-            if (j < rows - 1) {
+            if (j < GRIDSIZE - 1) {
                 this.neighbors.push(grid[i] [j + 1]);
             }
             
@@ -185,4 +168,23 @@ class Spot {
         }
 
     }
+}
+
+function generateGrid() {
+    for (let i = 0; i < GRIDSIZE; i++) {
+        for (let j = 0; j < GRIDSIZE; j++) {
+            grid[i][j] = new Spot (i, j); // is new used much like a let to Define funtions
+        }
+    }
+
+    for (let i = 0; i < GRIDSIZE; i++) {
+        for (let j = 0; j < GRIDSIZE; j++) {
+            grid[i][j].addNeighbors(grid);
+        }
+    }
+
+    start = grid[0][0]; // start point
+    end = grid[25][23]; // end point
+
+    openSet.push(start);
 }
