@@ -5,8 +5,9 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-const GRIDSIZE = 50;
-let grid;
+let cols = 50;
+let rows = 50;
+let grid = new Array(cols);
 
 let openSet = [];
 let closedSet = [];
@@ -18,8 +19,8 @@ let path = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  cellWidth = width / grid[0].lenght;
-  cellHeight = height / grid.length;
+  cellWidth = width / cols;
+  cellHeight = height / rows;
 
   generateGrid();  
 }
@@ -86,14 +87,19 @@ function draw() {
 }
 
 function generateGrid() {
-  for (let i = 0; i < GRIDSIZE; i++) {
-    for (let j = 0; j < GRIDSIZE; j++) {
+  // making an 2D array
+  for (let i = 0; i < cols; i++) {
+    grid[i] = new Array(rows);
+  }
+
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
       grid[i][j] = new Pathfinder (i, j); // is new used much like a let to Define funtions
     }
   }
 
-  for (let i = 0; i < GRIDSIZE; i++) {
-    for (let j = 0; j < GRIDSIZE; j++) {
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
       grid[i][j].checkNeighbors(grid);
     }
   }
@@ -117,7 +123,7 @@ class Pathfinder {
     this.previous = undefined;
   }
 
-  displayGrid(color) {
+  show(color) {
     fill(color);
     rect(this.i * cellWidth, this.j * cellHeight, cellWidth - 1, cellHeight - 1);
   }
@@ -126,7 +132,7 @@ class Pathfinder {
     let i = this.i;
     let j = this. j;
     // Check neighbors
-    if (i < GRIDSIZE - 1) {
+    if (i < cols - 1) {
       this.neighbors.push(grid[i + 1] [j]);
     }
 
@@ -134,7 +140,7 @@ class Pathfinder {
       this.neighbors.push(grid[i - 1] [j]);
     }
 
-    if (j < GRIDSIZE - 1) {
+    if (j < rows - 1) {
       this.neighbors.push(grid[i] [j + 1]);
     }
     
@@ -161,22 +167,22 @@ function removeFromArray(array, value) {
 }
 
 function colorPath() {
-  for (let i = 0; i < GRIDSIZE; i++) {
-    for (let j = 0; j < GRIDSIZE; j++) {
-      grid[i][j].displayGrid(color(255));
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      grid[i][j].show(color(255));
     }
   }
   // display closed array
   for (let i = 0; i < closedSet.length; i++) {
-    closedSet[i].displayGrid(color(255, 0, 0));
+    closedSet[i].show(color(255, 0, 0));
 
   }
   // display open array
   for (let i = 0; i < openSet.length; i++) {
-    openSet[i].displayGrid(color(0, 255, 0));
+    openSet[i].show(color(0, 255, 0));
   }
 
   for (let i = 0; i < path.length; i++) {
-    path[i].displayGrid(color(0, 0, 255));
+    path[i].show(color(0, 0, 255));
   }
 }
