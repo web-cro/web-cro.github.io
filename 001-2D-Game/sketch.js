@@ -15,8 +15,6 @@ let loadLevel = 1;
 let playerX = 0;
 let playerY = 4;
 
-let grid = new PF.Grid(levelPath);
-
 function preload() {
   level = loadStrings("assets/" + loadLevel + "level.txt");
   levelPath = loadStrings("assets/" + loadLevel + "levelpath.txt");
