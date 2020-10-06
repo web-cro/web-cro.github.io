@@ -11,22 +11,6 @@
 //  g(n) = time from start to finish
 //  h(n) = IDK ??
 
-
-// look through the array and remove a value
-function removeFromArray(array, value) {
-    for (let i = array.length - 1; i >= 0; i--) {
-        if (array[i] === value) {
-            array.splice(i, 1);
-        }
-    }
-}
-
-function heuristic(a , b) {
-let distance = abs(a.i - b.i) + abs(a.j - b.j);
-return distance;
-}
-
-
 let cols = 50;
 let rows = 50;
 let grid = new Array(cols); // How does "New Array" work?
@@ -37,46 +21,6 @@ let start;
 let end;
 let cellWidth, cellHeight;
 let path = [];
-
-class Spot {
-constructor(i, j) {
-    this.i = i;
-    this.j = j;
-
-    this.f = 0;
-    this.g = 0;
-    this.h = 0;
-
-    this.neighbors = [];
-    this.previous = undefined;
-
-    this.show = function(color) {
-        fill(color);
-        rect(this.i * cellWidth, this.j * cellHeight, cellWidth - 1, cellHeight - 1);
-    }
-
-    this.addNeighbors = function(grid) {
-        let i = this.i;
-        let j = this. j;
-        // Check neighbors
-        if (i < cols - 1) {
-            this.neighbors.push(grid[i + 1] [j]);
-        }
-
-        if (i > 0) {
-            this.neighbors.push(grid[i - 1] [j]);
-        }
-
-        if (j < rows - 1) {
-            this.neighbors.push(grid[i] [j + 1]);
-        }
-        
-        if (j > 0) {
-            this.neighbors.push(grid[i] [j - 1]);
-        }
-    }
-
-}
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -123,7 +67,6 @@ function draw() {
         let currentValue = openSet[lowestValue]; 
 
         if (currentValue === end) {
-
             // find the path
             path = [];
             let temp = currentValue;
@@ -186,5 +129,60 @@ function draw() {
 
         for (let i = 0; i < path.length; i++) {
         path[i].show(color(0, 0, 255));
+    }
+}
+
+// look through the array and remove a value
+function removeFromArray(array, value) {
+    for (let i = array.length - 1; i >= 0; i--) {
+        if (array[i] === value) {
+            array.splice(i, 1);
+        }
+    }
+}
+
+function heuristic(a , b) {
+    let distance = abs(a.i - b.i) + abs(a.j - b.j);
+    return distance;
+}
+
+class Spot {
+    constructor(i, j) {
+        this.i = i;
+        this.j = j;
+
+        this.f = 0;
+        this.g = 0;
+        this.h = 0;
+
+        this.neighbors = [];
+        this.previous = undefined;
+
+        this.show = function(color) {
+            fill(color);
+            rect(this.i * cellWidth, this.j * cellHeight, cellWidth - 1, cellHeight - 1);
+        }
+
+        this.addNeighbors = function(grid) {
+            let i = this.i;
+            let j = this. j;
+            // Check neighbors
+            if (i < cols - 1) {
+                this.neighbors.push(grid[i + 1] [j]);
+            }
+
+            if (i > 0) {
+                this.neighbors.push(grid[i - 1] [j]);
+            }
+
+            if (j < rows - 1) {
+                this.neighbors.push(grid[i] [j + 1]);
+            }
+            
+            if (j > 0) {
+                this.neighbors.push(grid[i] [j - 1]);
+            }
+        }
+
     }
 }
