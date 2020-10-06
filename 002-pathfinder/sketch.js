@@ -11,8 +11,25 @@
 //  g(n) = time from start to finish
 //  h(n) = IDK ??
 
-const GRIDSIZE = 50;
-let grid;
+
+// look through the array and remove a value
+function removeFromArray(array, value) {
+    for (let i = array.length - 1; i >= 0; i--) {
+        if (array[i] === value) {
+            array.splice(i, 1);
+        }
+    }
+}
+
+function heuristic(a , b) {
+    let distance = abs(a.i - b.i) + abs(a.j - b.j);
+    return distance;
+}
+
+
+let cols = 50;
+let rows = 50;
+let grid = new Array(cols); // How does "New Array" work?
 
 let openSet = [];
 let closedSet = [];
@@ -21,19 +38,76 @@ let end;
 let cellWidth, cellHeight;
 let path = [];
 
+class Spot {
+    constructor(i, j) {
+        this.i = i;
+        this.j = j;
+
+        this.f = 0;
+        this.g = 0;
+        this.h = 0;
+
+        this.neighbors = [];
+        this.previous = undefined;
+    }
+
+    show(color) {
+        fill(color);
+        rect(this.i * cellWidth, this.j * cellHeight, cellWidth - 1, cellHeight - 1);
+    }
+
+    checkNeighbors = (grid) {
+        let i = this.i;
+        let j = this. j;
+        // Check neighbors
+        if (i < cols - 1) {
+            this.neighbors.push(grid[i + 1] [j]);
+        }
+
+        if (i > 0) {
+            this.neighbors.push(grid[i - 1] [j]);
+        }
+
+        if (j < rows - 1) {
+            this.neighbors.push(grid[i] [j + 1]);
+        }
+        
+        if (j > 0) {
+            this.neighbors.push(grid[i] [j - 1]);
+        }
+    }
+
+}
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
-    cellWidth = width / grid[0].lenght;
-    cellHeight = height / grid.length;
+    cellWidth = width / cols;
+    cellHeight = height / rows;
 
     // making an 2D array
-    // for (let i = 0; i < GRIDSIZE; i++) {
-    //     grid[i] = new Array(GRIDSIZE);
-    // }
+    for (let i = 0; i < cols; i++) {
+        grid[i] = new Array(rows);
+    }
 
-    generateGrid();
-    console.log(grid);
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            grid[i][j] = new Spot (i, j); // is new used much like a let to Define funtions
+        }
+    }
+
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            grid[i][j].checkNeighbors = (grid);
+        }
+    }
+
+    start = grid[0][0]; // start point
+    end = grid[25][23]; // end point
+
+    openSet.push(start);
+
+console.log(grid);
 }
 
 function draw() {
@@ -50,6 +124,7 @@ function draw() {
         let currentValue = openSet[lowestValue]; 
 
         if (currentValue === end) {
+
             // find the path
             path = [];
             let temp = currentValue;
@@ -88,103 +163,29 @@ function draw() {
             }
         }
     }
-
+    
     else {
         // No Solution
     }
 
     background(0);
 
-    for (let i = 0; i < GRIDSIZE; i++) {
-        for (let j = 0; j < GRIDSIZE; j++) {
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
             grid[i][j].show(color(255));
         }
     }
-    // display closed array
+// display closed array
     for (let i = 0; i < closedSet.length; i++) {
         closedSet[i].show(color(255, 0, 0));
 
     }
-    // display open array
-        for (let i = 0; i < openSet.length; i++) {
-        openSet[i].show(color(0, 255, 0));
+// display open array
+    for (let i = 0; i < openSet.length; i++) {
+        openSet[i].show(color(0, 255, 0))
     }
 
-        for (let i = 0; i < path.length; i++) {
+    for (let i = 0; i < path.length; i++) {
         path[i].show(color(0, 0, 255));
     }
-}
-
-// look through the array and remove a value
-function removeFromArray(array, value) {
-    for (let i = array.length - 1; i >= 0; i--) {
-        if (array[i] === value) {
-            array.splice(i, 1);
-        }
-    }
-}
-
-function heuristic(a , b) {
-    let distance = abs(a.i - b.i) + abs(a.j - b.j);
-    return distance;
-}
-
-class Spot {
-    constructor(i, j) {
-        this.i = i;
-        this.j = j;
-
-        this.f = 0;
-        this.g = 0;
-        this.h = 0;
-
-        this.neighbors = [];
-        this.previous = undefined;
-
-        this.show = function(color) {
-            fill(color);
-            rect(this.i * cellWidth, this.j * cellHeight, cellWidth - 1, cellHeight - 1);
-        //}
-
-        this.addNeighbors = function(grid) {
-            let i = this.i;
-            let j = this. j;
-            // Check neighbors
-            if (i < GRIDSIZE - 1) {
-                this.neighbors.push(grid[i + 1] [j]);
-            }
-
-            if (i > 0) {
-                this.neighbors.push(grid[i - 1] [j]);
-            }
-
-            if (j < GRIDSIZE - 1) {
-                this.neighbors.push(grid[i] [j + 1]);
-            }
-            
-            if (j > 0) {
-                this.neighbors.push(grid[i] [j - 1]);
-            }
-        }
-
-    }
-}
-
-function generateGrid() {
-    for (let i = 0; i < GRIDSIZE; i++) {
-        for (let j = 0; j < GRIDSIZE; j++) {
-            grid[i][j] = new Spot (i, j); // is new used much like a let to Define funtions
-        }
-    }
-
-    for (let i = 0; i < GRIDSIZE; i++) {
-        for (let j = 0; j < GRIDSIZE; j++) {
-            grid[i][j].addNeighbors(grid);
-        }
-    }
-
-    start = grid[0][0]; // start point
-    end = grid[25][23]; // end point
-
-    openSet.push(start);
 }
