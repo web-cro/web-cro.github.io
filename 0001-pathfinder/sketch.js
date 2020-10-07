@@ -11,6 +11,8 @@
 //  g(n) = time from startingPoint to finish
 //  h(n) = IDK ??
 
+// add walls and also the ablity to sideways
+
 const GRIDSIZE = 100;
 let grid = new Array(GRIDSIZE); // How does "New Array" work?
 
@@ -26,8 +28,10 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   generateGrid();
 
-  startingPoint = grid[0][0]; // startingPoint point
-  endingPoint = grid[99][99]; // endingPoint point
+  // startingPoint point
+  startingPoint = grid[0][0]; // make it change able
+  // endingPoint point
+  endingPoint = grid[99][99]; // make it change able
 
   cellsToCheck.push(startingPoint);
 
