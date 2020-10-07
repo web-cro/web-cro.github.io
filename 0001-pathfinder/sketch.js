@@ -11,7 +11,7 @@
 //  g(n) = time from startingPoint to finish
 //  h(n) = IDK ??
 
-const GRIDSIZE = 30;
+const GRIDSIZE = 100;
 let grid = new Array(GRIDSIZE); // How does "New Array" work?
 
 let cellsToCheck = [];
@@ -22,13 +22,12 @@ let cellWidth, cellHeight;
 let path = [];
 let currentValue;
 
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
   generateGrid();
 
   startingPoint = grid[0][0]; // startingPoint point
-  endingPoint = grid[29][29]; // endingPoint point
+  endingPoint = grid[99][99]; // endingPoint point
 
   cellsToCheck.push(startingPoint);
 
@@ -145,7 +144,7 @@ function findPath () {
         value = value.previous;
       }
       noLoop();
-      console.log("DONE");
+      console.log("I am Finish");
     }
 
     // remove the value fron the cellsToCheck and push it into the cellThatHaveBeenChecked
