@@ -20,6 +20,7 @@ let startingPoint;
 let endingPoint;
 let cellWidth, cellHeight;
 let path = [];
+let currentValue;
 
 
 function setup() {
@@ -36,28 +37,8 @@ function setup() {
 
 function draw() {
   findPath();
-
   background(0);
-
-  // display grid
-  for (let i = 0; i < GRIDSIZE; i++) {
-    for (let j = 0; j < GRIDSIZE; j++) {
-      grid[i][j].displayGrid(color(255));
-    }
-  }
-  // Display the fastest path from startingPoint to finish
-  for (let i = 0; i < cellThatHaveBeenChecked.length; i++) {
-    cellThatHaveBeenChecked[i].displayGrid(color(255, 0, 0));
-
-  }
-  // change the color of the cells that have already been checked
-  for (let i = 0; i < cellsToCheck.length; i++) {
-    cellsToCheck[i].displayGrid(color(0, 255, 0));
-  }
-
-  for (let i = 0; i < path.length; i++) {
-    path[i].displayGrid(color(0, 0, 255));
-  }
+  displayPath();
 }
 
 // look through the array and remove a cells that we have already visted
@@ -89,6 +70,7 @@ class Pathfinder {
   }
   // create and color rects to use when display grid
   displayGrid(color) {
+    strokeWeight(0);
     fill(color);
     rect(this.i * cellWidth, this.j * cellHeight, cellWidth - 1, cellHeight - 1);
   }
@@ -151,7 +133,7 @@ function findPath () {
         lowestValue = i;
       }
     }
-    let currentValue = cellsToCheck[lowestValue]; 
+    currentValue = cellsToCheck[lowestValue]; 
 
     if (currentValue === endingPoint) {
 
@@ -197,6 +179,28 @@ function findPath () {
   // No Solution
   else {
     console.log("No Solution");
+  }
+}
+
+function displayPath() {
+// display grid
+  for (let i = 0; i < GRIDSIZE; i++) {
+    for (let j = 0; j < GRIDSIZE; j++) {
+      grid[i][j].displayGrid(color(230,230,230));
+    }
+  }
+  // Display the fastest path from startingPoint to finish
+  for (let i = 0; i < cellThatHaveBeenChecked.length; i++) {
+    cellThatHaveBeenChecked[i].displayGrid(color(255, 0, 0));
+
+  }
+  // change the color of the cells that have already been checked
+  for (let i = 0; i < cellsToCheck.length; i++) {
+    cellsToCheck[i].displayGrid(color(0, 255, 0));
+  }
+
+  for (let i = 0; i < path.length; i++) {
+    path[i].displayGrid(color(0, 0, 255));
   }
 }
 
