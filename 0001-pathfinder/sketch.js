@@ -28,7 +28,7 @@ function setup() {
     makeGrid();
 
     startingPoint = grid[0][0]; // startingPoint point
-    endingPoint = grid[29][0]; // endingPoint point
+    endingPoint = grid[29][29]; // endingPoint point
 
     cellsToCheck.push(startingPoint);
 
