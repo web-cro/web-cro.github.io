@@ -30,8 +30,10 @@ function setup() {
 
   // startingPoint point
   startingPoint = grid[0][0]; // make it change able
+  startingPoint.wall = false;
   // endingPoint point
-  endingPoint = grid[44][0]; // make it change able
+  endingPoint = grid[44][44]; // make it change able
+  endingPoint.wall = false;
 
   cellsToCheck.push(startingPoint);
 
@@ -68,13 +70,22 @@ class Pathfinder {
     this.g = 0;
     this.h = 0;
 
-    this.neighbors = [];
+    this.neighborsToCheck = [];
     this.previous = undefined;
+    this.wall = false;
+
+    if (random(1) <= 0.3) {
+      this.wall = true;
+    }
   }
   // create and color rects to use when display grid
   displayGrid(color) {
-    strokeWeight(0);
+    //strokeWeight(0);
+    noStroke();
     fill(color);
+    if (this.wall) {
+      fill(0);
+    }
     rect(this.i * cellWidth, this.j * cellHeight, cellWidth - 1, cellHeight - 1);
   }
 
@@ -83,19 +94,19 @@ class Pathfinder {
     let j = this. j;
     // Check neighbors
     if (i < GRIDSIZE - 1) {
-      this.neighbors.push(grid[i + 1] [j]);
+      this.neighborsToCheck.push(grid[i + 1] [j]);
     }
 
     if (i > 0) {
-      this.neighbors.push(grid[i - 1] [j]);
+      this.neighborsToCheck.push(grid[i - 1] [j]);
     }
 
     if (j < GRIDSIZE - 1) {
-      this.neighbors.push(grid[i] [j + 1]);
+      this.neighborsToCheck.push(grid[i] [j + 1]);
     }
     
     if (j > 0) {
-      this.neighbors.push(grid[i] [j - 1]);
+      this.neighborsToCheck.push(grid[i] [j - 1]);
     }
   }
 }
@@ -139,42 +150,34 @@ function findPath () {
     currentValue = cellsToCheck[lowestValue]; 
 
     if (currentValue === endingPoint) {
-
-      // find the path
-      path = [];
-      let value = currentValue;
-      while (value.previous) {
-        path.push(value.previous);
-        value = value.previous;
-      }
-      noLoop();
       console.log("I am Finish");
+      noLoop();
     }
 
     // remove the value fron the cellsToCheck and push it into the cellThatHaveBeenChecked
     removeFromArray(cellsToCheck, currentValue);
     cellThatHaveBeenChecked.push(currentValue);
 
-    let neighbors = currentValue.neighbors;
-    for (let i = 0; i < neighbors.length; i++) {
-      let neighborsToCheck = neighbors[i];
+    let neighborsToCheck = currentValue.neighborsToCheck;
+    for (let i = 0; i < neighborsToCheck.length; i++) {
+      let myNeighbors = neighborsToCheck[i];
 
-      if (!cellThatHaveBeenChecked.includes(neighborsToCheck)) { // what does include mean
+      if (!cellThatHaveBeenChecked.includes(myNeighbors) && !myNeighbors.wall) { // what does include mean
         let gValue = currentValue.g + 1;
 
-        if (cellsToCheck.includes(neighborsToCheck)) {
-          if (gValue < neighborsToCheck.g) {
-            neighborsToCheck.g = gValue;
+        if (cellsToCheck.includes(myNeighbors)) {
+          if (gValue < myNeighbors.g) {
+            myNeighbors.g = gValue;
           }
         }
         else {
-          neighborsToCheck.g = gValue;
-          cellsToCheck.push(neighborsToCheck);
+          myNeighbors.g = gValue;
+          cellsToCheck.push(myNeighbors);
         }
         // make an educated guess for the fastest path
-        neighborsToCheck.h = checkDistance(neighborsToCheck, endingPoint);
-        neighborsToCheck.f = neighborsToCheck.g = neighborsToCheck.h;
-        neighborsToCheck.previous = currentValue;
+        myNeighbors.h = checkDistance(myNeighbors, endingPoint);
+        myNeighbors.f = myNeighbors.g + myNeighbors.h;
+        myNeighbors.previous = currentValue;
       }
     }
   }
@@ -182,11 +185,12 @@ function findPath () {
   // No Solution
   else {
     console.log("No Solution");
+    noLoop();
   }
 }
 
 function displayPath() {
-// display grid
+  // display grid
   for (let i = 0; i < GRIDSIZE; i++) {
     for (let j = 0; j < GRIDSIZE; j++) {
       grid[i][j].displayGrid(color(230,230,230));
@@ -194,16 +198,25 @@ function displayPath() {
   }
   // Display the fastest path from startingPoint to finish
   for (let i = 0; i < cellThatHaveBeenChecked.length; i++) {
-    cellThatHaveBeenChecked[i].displayGrid(color(255, 0, 0));
-
+    cellThatHaveBeenChecked[i].displayGrid(color(231, 13, 143));
   }
   // change the color of the cells that have already been checked
   for (let i = 0; i < cellsToCheck.length; i++) {
-    cellsToCheck[i].displayGrid(color(0, 255, 0));
+    cellsToCheck[i].displayGrid(color(185, 19, 231));
   }
 
-  for (let i = 0; i < path.length; i++) {
-    path[i].displayGrid(color(0, 0, 255));
+  // find the path
+  path = [];
+  let value = currentValue;
+  while (value.previous) {
+    path.push(value.previous);
+    value = value.previous;
+  }
+
+  if (currentValue === endingPoint) {
+    for (let i = 0; i < path.length; i++) {
+      path[i].displayGrid(color(97, 38, 186));
+    }
   }
 }
 
