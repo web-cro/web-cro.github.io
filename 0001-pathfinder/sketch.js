@@ -13,7 +13,7 @@
 
 // add walls and also the ablity to sideways
 
-const GRIDSIZE = 100;
+const GRIDSIZE = 45;
 let grid = new Array(GRIDSIZE); // How does "New Array" work?
 
 let cellsToCheck = [];
@@ -31,7 +31,7 @@ function setup() {
   // startingPoint point
   startingPoint = grid[0][0]; // make it change able
   // endingPoint point
-  endingPoint = grid[99][99]; // make it change able
+  endingPoint = grid[44][0]; // make it change able
 
   cellsToCheck.push(startingPoint);
 
