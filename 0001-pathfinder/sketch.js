@@ -23,6 +23,7 @@ let endingPoint;
 let cellWidth, cellHeight;
 let path = [];
 let currentValue;
+let fr = 30;
 
 let screenState = "startScreen";
 let waitTime = 500;
@@ -227,7 +228,7 @@ function runGame() {
   if (screenState === "startScreen") {
     background("white");
     showStartScreen();
-    if (millis() === waitTime) {
+    if (millis() >= waitTime) {
       screenState = "gameScreen";
     }
   } 
