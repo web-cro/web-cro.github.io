@@ -24,6 +24,9 @@ let cellWidth, cellHeight;
 let path = [];
 let currentValue;
 
+let screenState = "startScreen";
+let waitTime = 500;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   generateGrid();
@@ -41,9 +44,7 @@ function setup() {
 }
 
 function draw() {
-  findPath();
-  background(0);
-  displayPath();
+  runGame();
 }
 
 // look through the array and remove any cells that we have already visted
@@ -151,7 +152,7 @@ function findPath () {
 
     if (currentValue === endingPoint) {
       console.log("I am Finish");
-      noLoop();
+      screenState = "endScreen";
     }
 
     // remove the values from the cellsToCheck and push it into the cellThatHaveBeenChecked
@@ -185,7 +186,7 @@ function findPath () {
   // No Solution
   else {
     console.log("No Solution");
-    noLoop();
+    screenState = "endScreen";
   }
 }
 
@@ -218,4 +219,47 @@ function displayPath() {
       path[x].displayGrid(color(97, 38, 186));
     }
   }
+}
+
+function runGame() {
+  // controls what the screen the player is on and sets up in game displays like the score and the Target
+    
+  if (screenState === "startScreen") {
+    background("white");
+    showStartScreen();
+    if (millis() === waitTime) {
+      screenState = "gameScreen";
+    }
+  } 
+  
+  else if (screenState === "gameScreen") {
+    background(0);
+    findPath();
+    displayPath();
+  } 
+  
+  else if (screenState === "endScreen") {
+    background("white");
+    gameOver();
+  }
+}
+
+function showStartScreen() {
+  //   controls the Start screen text, its style, location, and size
+
+  textAlign(CENTER);
+  //textStyle(BOLDITALIC);
+  textSize(18);
+  text("Start Screen", width / 2, height / 2);
+}
+
+function gameOver() {
+  // controls the game over screen text, its style, location, and size
+    
+  textAlign(CENTER);
+  //textStyle(BOLDITALIC);
+  textSize(18);
+  fill("Black");
+  text("Game Over", width / 2, height / 2);
+  //text("Press R to restart Game", width / 2, height / 2 + 25);
 }
