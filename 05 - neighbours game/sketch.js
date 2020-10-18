@@ -10,6 +10,9 @@ let cellWidth;
 let cellHeight;
 const GRIDSIZE = 20;
 
+let cellX;
+let cellY;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   grid = generateEmptyGrid(GRIDSIZE);
@@ -20,11 +23,12 @@ function setup() {
 function draw() {
   background(220);
   displayGrid();
+  console.log(cellX, cellY);
 }
 
 function mousePressed() {
-  let cellX = floor(mouseX / cellWidth);
-  let cellY = floor(mouseY / cellHeight);
+  cellX = floor(mouseX / cellWidth);
+  cellY = floor(mouseY / cellHeight);
 
   toggleCell(cellX, cellY);   //self
   toggleCell(cellX, cellY-1); //north
